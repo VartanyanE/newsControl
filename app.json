@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "newsControl",
+    "slug": "newsControl",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "newsControl"
+}
