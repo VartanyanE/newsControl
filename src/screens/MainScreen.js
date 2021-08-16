@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button, FlatList, } from "react-native";
+import { View, Text, StyleSheet, Button, FlatList, TextInput } from "react-native";
 import { Card, ListItem, Icon } from "react-native-elements";
 
 import ApiCall from "../api/NewsApi";
@@ -10,11 +10,15 @@ import ApiCall from "../api/NewsApi";
 const MainScreen = () => {
 
     const [fetchData, setFetchData] = useState();
-      const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+      const [text, setText] = useState("");
 
          const fetchedData = async () => {
         
-             const response = await ApiCall.get("/");
+             const response = await ApiCall.get("/", {
+                 params: {
+                     q: {text}
+                 }});
              setFetchData(response.data.articles);
              await console.log(fetchData);
            
@@ -23,22 +27,26 @@ const MainScreen = () => {
 
     return (
       <View style={styles.main}>
-        <Button onPress={fetchedData} title="Press Me" />
+        <TextInput
+          style={{ height: 40 }}
+          placeholder="Type here to translate!"
+          onChangeText={(text) => setText(text)}
+          defaultValue={text}
+        />
+        <Button onPress={fetchedData} title="News" />
         <FlatList
           data={fetchData}
           keyExtractor={({ id }, index) => id}
-                renderItem={({ item }) => (
-          <Card>
-                        <Card.Title>{item.title}</Card.Title>
-          <Card.Divider />
-                        <Card.Title>{item.source.title}</Card.Title>
-          <Card.Divider />
-                        <Card.Title>{item.link}</Card.Title>
-        </Card>
-            
+          renderItem={({ item }) => (
+            <Card>
+              <Card.Title>{item.title}</Card.Title>
+              <Card.Divider />
+              <Card.Title>{item.source.title}</Card.Title>
+              <Card.Divider />
+              <Card.Title>{item.link}</Card.Title>
+            </Card>
           )}
         />
-        
       </View>
     );
 }
