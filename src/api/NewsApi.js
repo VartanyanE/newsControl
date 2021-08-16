@@ -10,7 +10,7 @@ export default axios.create({
     country: "US",
     lang: "en",
     
-    limit: "50",
+    limit: "1",
     media: "true",
     when: "30d",
   },
