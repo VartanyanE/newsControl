@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Button, FlatList, TextInput } from "react-native";
+import { ScrollView, Text, StyleSheet, Button, FlatList, TextInput, TouchableOpacity } from "react-native";
 import { Card, ListItem, Icon } from "react-native-elements";
+
 
 import ApiCall from "../api/NewsApi";
 
@@ -23,13 +24,17 @@ const MainScreen = () => {
              await console.log(fetchData);
            
          };
+    
+    const linkURL = async () => {
+        
+    }
 
 
     return (
-      <View style={styles.main}>
+      <ScrollView style={styles.main}>
         <TextInput
           style={{ height: 40 }}
-          placeholder="Type here to translate!"
+          placeholder="Whats your poison?"
           onChangeText={(text) => setText(text)}
           defaultValue={text}
         />
@@ -42,12 +47,17 @@ const MainScreen = () => {
               <Card.Title>{item.title}</Card.Title>
               <Card.Divider />
               <Card.Title>{item.source.title}</Card.Title>
-              <Card.Divider />
-              <Card.Title>{item.link}</Card.Title>
+                  <Card.Divider />
+                  <TouchableOpacity onPress={linkURL}>
+
+                <Card.Title>{item.link}</Card.Title></TouchableOpacity>
+              
             </Card>
+            
+            
           )}
         />
-      </View>
+      </ScrollView>
     );
 }
 
