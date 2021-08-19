@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, Text, StyleSheet, Button, FlatList, TextInput, TouchableOpacity } from "react-native";
 import { Card, ListItem, Icon } from "react-native-elements";
+import * as WebBrowser from "expo-web-browser";
 
 
 import ApiCall from "../api/NewsApi";
@@ -12,22 +13,29 @@ const MainScreen = () => {
 
     const [fetchData, setFetchData] = useState();
     const [errorMessage, setErrorMessage] = useState("");
-      const [text, setText] = useState("");
+  const [text, setText] = useState("");
+  const [link, setLink] = useState("");
 
          const fetchedData = async () => {
         
              const response = await ApiCall.get("/", {
                  params: {
                      q: {text}
-                 }});
+               }
+             });
+           
+            setLink(response.data.articles[0].link)
              setFetchData(response.data.articles);
-             await console.log(fetchData);
+          //  await console.log();
+           
            
          };
     
-    const linkURL = async () => {
-        
-    }
+  const handleOpenWithWebBrowser = () => {
+       console.log(link)
+       WebBrowser.openBrowserAsync(link);
+      
+    };
 
 
     return (
@@ -44,17 +52,15 @@ const MainScreen = () => {
           keyExtractor={({ id }, index) => id}
           renderItem={({ item }) => (
             <Card>
-              <Card.Title>{item.title}</Card.Title>
+              <TouchableOpacity
+                onPress={handleOpenWithWebBrowser}
+              ><Card.Title>{item.title}</Card.Title>
+              </TouchableOpacity>
+              
               <Card.Divider />
               <Card.Title>{item.source.title}</Card.Title>
-                  <Card.Divider />
-                  <TouchableOpacity onPress={linkURL}>
-
-                <Card.Title>{item.link}</Card.Title></TouchableOpacity>
-              
+              <Card.Divider />
             </Card>
-            
-            
           )}
         />
       </ScrollView>
